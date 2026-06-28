@@ -1,735 +1,739 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>ZonixMed Doctor Chat Test</title>
-    <style>
-      :root {
-        color-scheme: light;
-        --bg: #f4f7f8;
-        --panel: #ffffff;
-        --text: #1c2428;
-        --muted: #637177;
-        --line: #d8e1e4;
-        --primary: #0f766e;
-        --primary-dark: #0b5f59;
-        --accent: #7c3aed;
-        --danger: #b42318;
-        --ok: #137333;
-        --warn: #b26a00;
-        --shadow: 0 16px 50px rgba(23, 35, 40, 0.12);
-      }
 
-      * {
-        box-sizing: border-box;
-      }
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ZonixMed Doctor Chat Test</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f4f7f8;
+      --panel: #ffffff;
+      --text: #1c2428;
+      --muted: #637177;
+      --line: #d8e1e4;
+      --primary: #0f766e;
+      --primary-dark: #0b5f59;
+      --accent: #7c3aed;
+      --danger: #b42318;
+      --ok: #137333;
+      --warn: #b26a00;
+      --shadow: 0 16px 50px rgba(23, 35, 40, 0.12);
+    }
 
-      body {
-        margin: 0;
-        min-height: 100vh;
-        background:
-          linear-gradient(180deg, rgba(15, 118, 110, 0.08), transparent 320px),
-          var(--bg);
-        color: var(--text);
-        font-family:
-          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-          "Segoe UI", sans-serif;
-      }
+    * {
+      box-sizing: border-box;
+    }
 
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        linear-gradient(180deg, rgba(15, 118, 110, 0.08), transparent 320px),
+        var(--bg);
+      color: var(--text);
+      font-family:
+        Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", sans-serif;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 20px clamp(16px, 3vw, 32px);
+      border-bottom: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.82);
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top: 0;
+      z-index: 5;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 22px;
+      line-height: 1.2;
+      letter-spacing: 0;
+    }
+
+    .subtitle {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      min-height: 34px;
+      padding: 6px 10px;
+      border-radius: 6px;
+      border: 1px solid var(--line);
+      background: var(--panel);
+      color: var(--muted);
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .status.ok {
+      border-color: rgba(19, 115, 51, 0.25);
+      color: var(--ok);
+    }
+
+    .status.warn {
+      border-color: rgba(178, 106, 0, 0.25);
+      color: var(--warn);
+    }
+
+    .status.error {
+      border-color: rgba(180, 35, 24, 0.25);
+      color: var(--danger);
+    }
+
+    main {
+      display: grid;
+      grid-template-columns: minmax(300px, 420px) minmax(0, 1fr);
+      gap: 18px;
+      padding: 18px clamp(16px, 3vw, 32px) 32px;
+    }
+
+    aside,
+    section {
+      min-width: 0;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+
+    .controls {
+      padding: 16px;
+    }
+
+    .group {
+      border-top: 1px solid var(--line);
+      padding-top: 14px;
+      margin-top: 14px;
+    }
+
+    .group:first-child {
+      border-top: 0;
+      margin-top: 0;
+      padding-top: 0;
+    }
+
+    .group-title {
+      margin: 0 0 10px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    label {
+      display: block;
+      margin: 10px 0 5px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #fff;
+      color: var(--text);
+      font: inherit;
+      font-size: 14px;
+      padding: 10px;
+      outline: none;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 86px;
+    }
+
+    input:focus,
+    textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.13);
+    }
+
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    button {
+      min-height: 38px;
+      border: 1px solid transparent;
+      border-radius: 6px;
+      background: var(--primary);
+      color: #fff;
+      cursor: pointer;
+      font: inherit;
+      font-size: 14px;
+      font-weight: 700;
+      padding: 8px 12px;
+    }
+
+    button:hover {
+      background: var(--primary-dark);
+    }
+
+    button.secondary {
+      background: #fff;
+      border-color: var(--line);
+      color: var(--text);
+    }
+
+    button.secondary:hover {
+      background: #eef4f5;
+    }
+
+    button.danger {
+      background: #fff;
+      border-color: rgba(180, 35, 24, 0.35);
+      color: var(--danger);
+    }
+
+    button.danger:hover {
+      background: #fff3f1;
+    }
+
+    .chat-shell {
+      display: grid;
+      grid-template-rows: auto minmax(280px, 1fr) auto;
+      min-height: calc(100vh - 126px);
+      overflow: hidden;
+    }
+
+    .chat-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .channel-title {
+      min-width: 0;
+    }
+
+    .channel-title strong {
+      display: block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .channel-title span {
+      display: block;
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 12px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .messages {
+      padding: 16px;
+      overflow: auto;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.64), transparent),
+        #f8fbfc;
+    }
+
+    .empty {
+      display: grid;
+      place-items: center;
+      min-height: 260px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .message {
+      display: flex;
+      margin-bottom: 10px;
+    }
+
+    .message.mine {
+      justify-content: flex-end;
+    }
+
+    .bubble {
+      max-width: min(680px, 82%);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      padding: 9px 11px;
+    }
+
+    .mine .bubble {
+      border-color: rgba(15, 118, 110, 0.22);
+      background: #e9f7f5;
+    }
+
+    .meta {
+      display: flex;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 11px;
+      margin-bottom: 4px;
+    }
+
+    .text {
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      line-height: 1.45;
+    }
+
+    .composer {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 10px;
+      padding: 12px;
+      border-top: 1px solid var(--line);
+      background: #fff;
+    }
+
+    .composer textarea {
+      min-height: 52px;
+      max-height: 160px;
+    }
+
+    .log {
+      margin-top: 12px;
+      max-height: 220px;
+      overflow: auto;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #0f1720;
+      color: #d7e6ea;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 12px;
+      padding: 10px;
+      white-space: pre-wrap;
+    }
+
+    .channels {
+      display: grid;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .channel-item {
+      width: 100%;
+      text-align: left;
+      background: #fff;
+      border-color: var(--line);
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .channel-item:hover {
+      background: #eef4f5;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      background: rgba(124, 58, 237, 0.1);
+      color: var(--accent);
+      padding: 4px 9px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    @media (max-width: 920px) {
       header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 16px;
-        padding: 20px clamp(16px, 3vw, 32px);
-        border-bottom: 1px solid var(--line);
-        background: rgba(255, 255, 255, 0.82);
-        backdrop-filter: blur(10px);
-        position: sticky;
-        top: 0;
-        z-index: 5;
-      }
-
-      h1 {
-        margin: 0;
-        font-size: 22px;
-        line-height: 1.2;
-        letter-spacing: 0;
-      }
-
-      .subtitle {
-        margin-top: 4px;
-        color: var(--muted);
-        font-size: 13px;
-      }
-
-      .status {
-        display: inline-flex;
-        align-items: center;
-        min-height: 34px;
-        padding: 6px 10px;
-        border-radius: 6px;
-        border: 1px solid var(--line);
-        background: var(--panel);
-        color: var(--muted);
-        font-size: 13px;
-        white-space: nowrap;
-      }
-
-      .status.ok {
-        border-color: rgba(19, 115, 51, 0.25);
-        color: var(--ok);
-      }
-
-      .status.warn {
-        border-color: rgba(178, 106, 0, 0.25);
-        color: var(--warn);
-      }
-
-      .status.error {
-        border-color: rgba(180, 35, 24, 0.25);
-        color: var(--danger);
+        align-items: flex-start;
+        flex-direction: column;
       }
 
       main {
-        display: grid;
-        grid-template-columns: minmax(300px, 420px) minmax(0, 1fr);
-        gap: 18px;
-        padding: 18px clamp(16px, 3vw, 32px) 32px;
-      }
-
-      aside,
-      section {
-        min-width: 0;
-      }
-
-      .panel {
-        background: var(--panel);
-        border: 1px solid var(--line);
-        border-radius: 8px;
-        box-shadow: var(--shadow);
-      }
-
-      .controls {
-        padding: 16px;
-      }
-
-      .group {
-        border-top: 1px solid var(--line);
-        padding-top: 14px;
-        margin-top: 14px;
-      }
-
-      .group:first-child {
-        border-top: 0;
-        margin-top: 0;
-        padding-top: 0;
-      }
-
-      .group-title {
-        margin: 0 0 10px;
-        font-size: 14px;
-        font-weight: 700;
-      }
-
-      label {
-        display: block;
-        margin: 10px 0 5px;
-        color: var(--muted);
-        font-size: 12px;
-        font-weight: 700;
-        text-transform: uppercase;
-      }
-
-      input,
-      textarea {
-        width: 100%;
-        border: 1px solid var(--line);
-        border-radius: 6px;
-        background: #fff;
-        color: var(--text);
-        font: inherit;
-        font-size: 14px;
-        padding: 10px;
-        outline: none;
-      }
-
-      textarea {
-        resize: vertical;
-        min-height: 86px;
-      }
-
-      input:focus,
-      textarea:focus {
-        border-color: var(--primary);
-        box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.13);
-      }
-
-      .button-row {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-        margin-top: 12px;
-      }
-
-      button {
-        min-height: 38px;
-        border: 1px solid transparent;
-        border-radius: 6px;
-        background: var(--primary);
-        color: #fff;
-        cursor: pointer;
-        font: inherit;
-        font-size: 14px;
-        font-weight: 700;
-        padding: 8px 12px;
-      }
-
-      button:hover {
-        background: var(--primary-dark);
-      }
-
-      button.secondary {
-        background: #fff;
-        border-color: var(--line);
-        color: var(--text);
-      }
-
-      button.secondary:hover {
-        background: #eef4f5;
-      }
-
-      button.danger {
-        background: #fff;
-        border-color: rgba(180, 35, 24, 0.35);
-        color: var(--danger);
-      }
-
-      button.danger:hover {
-        background: #fff3f1;
+        grid-template-columns: 1fr;
       }
 
       .chat-shell {
-        display: grid;
-        grid-template-rows: auto minmax(280px, 1fr) auto;
-        min-height: calc(100vh - 126px);
-        overflow: hidden;
+        min-height: 640px;
       }
+    }
+  </style>
+</head>
 
-      .chat-top {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 12px;
-        padding: 14px 16px;
-        border-bottom: 1px solid var(--line);
-      }
+<body>
+  <header>
+    <div>
+      <h1>Doctor Chat Test</h1>
+      <div class="subtitle">Use a DOCTOR, ADMIN, SUPPORT, or SERVICE accessToken.</div>
+    </div>
+    <div id="connectionStatus" class="status warn">Disconnected</div>
+  </header>
 
-      .channel-title {
-        min-width: 0;
-      }
-
-      .channel-title strong {
-        display: block;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
-
-      .channel-title span {
-        display: block;
-        margin-top: 3px;
-        color: var(--muted);
-        font-size: 12px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
-
-      .messages {
-        padding: 16px;
-        overflow: auto;
-        background:
-          linear-gradient(180deg, rgba(255, 255, 255, 0.64), transparent),
-          #f8fbfc;
-      }
-
-      .empty {
-        display: grid;
-        place-items: center;
-        min-height: 260px;
-        color: var(--muted);
-        text-align: center;
-      }
-
-      .message {
-        display: flex;
-        margin-bottom: 10px;
-      }
-
-      .message.mine {
-        justify-content: flex-end;
-      }
-
-      .bubble {
-        max-width: min(680px, 82%);
-        border: 1px solid var(--line);
-        border-radius: 8px;
-        background: #fff;
-        padding: 9px 11px;
-      }
-
-      .mine .bubble {
-        border-color: rgba(15, 118, 110, 0.22);
-        background: #e9f7f5;
-      }
-
-      .meta {
-        display: flex;
-        gap: 8px;
-        color: var(--muted);
-        font-size: 11px;
-        margin-bottom: 4px;
-      }
-
-      .text {
-        white-space: pre-wrap;
-        overflow-wrap: anywhere;
-        line-height: 1.45;
-      }
-
-      .composer {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) auto;
-        gap: 10px;
-        padding: 12px;
-        border-top: 1px solid var(--line);
-        background: #fff;
-      }
-
-      .composer textarea {
-        min-height: 52px;
-        max-height: 160px;
-      }
-
-      .log {
-        margin-top: 12px;
-        max-height: 220px;
-        overflow: auto;
-        border: 1px solid var(--line);
-        border-radius: 6px;
-        background: #0f1720;
-        color: #d7e6ea;
-        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-        font-size: 12px;
-        padding: 10px;
-        white-space: pre-wrap;
-      }
-
-      .channels {
-        display: grid;
-        gap: 8px;
-        margin-top: 10px;
-      }
-
-      .channel-item {
-        width: 100%;
-        text-align: left;
-        background: #fff;
-        border-color: var(--line);
-        color: var(--text);
-        font-weight: 600;
-      }
-
-      .channel-item:hover {
-        background: #eef4f5;
-      }
-
-      .pill {
-        display: inline-flex;
-        align-items: center;
-        border-radius: 999px;
-        background: rgba(124, 58, 237, 0.1);
-        color: var(--accent);
-        padding: 4px 9px;
-        font-size: 12px;
-        font-weight: 700;
-      }
-
-      @media (max-width: 920px) {
-        header {
-          align-items: flex-start;
-          flex-direction: column;
-        }
-
-        main {
-          grid-template-columns: 1fr;
-        }
-
-        .chat-shell {
-          min-height: 640px;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <header>
-      <div>
-        <h1>Doctor Chat Test</h1>
-        <div class="subtitle">Use a DOCTOR, ADMIN, SUPPORT, or SERVICE accessToken.</div>
+  <main>
+    <aside class="panel controls">
+      <div class="group">
+        <p class="group-title">Backend</p>
+        <label for="apiBase">API base URL</label>
+        <input id="apiBase" value="https://api.dev.matinteb.org" />
+        <label for="accessToken">Auth-service accessToken</label>
+        <textarea id="accessToken"
+          placeholder="Paste internal JWT accessToken here">eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InYxIn0.eyJzdWIiOiJjM2Y1NTBiNS05OTc2LTQ4NGItYjhiZS1mZWY3Zjk0ZmFmNGQiLCJ1aWQiOiJHUWN2YkE5ZEE1UmpLMlo4Y0c1ekNDd2RqVFkyIiwiZW1haWwiOiJub3JhLmhhZGRhZC5kb2N0b3JAem9uaXhtZWQuZGV2Iiwicm9sZSI6IkRPQ1RPUiIsInBlcm1zIjpbImF1dGg6bWUiLCJkb2N0b3I6cmVhZDpzZWxmIiwiZG9jdG9yOndyaXRlOnNlbGYiXSwic3RhdHVzIjoiQUNUSVZFIiwiaWF0IjoxNzgyNjUyODc0LCJleHAiOjE3ODI5OTg0NzQsImF1ZCI6ImJlbGxhZGkiLCJpc3MiOiJhdXRoIn0.bp4aNJk-VsqW27KmGtE6CkUKg1GmAp3mRNjcx0HUU7d2Pbs3Kk1ruh6APS8o_2IAS7ybPeN7rPrOtY9tTBx5LtWMnt1K3W07rQevSzQ8lNDdWZyTJarAYR6OgzGhoR3_YyJUVUXmVEvJpCdsqvSALS4i-kamaOgt0DZzk4LB534K8xEqqk-ui5SpcXv9DsgrZkAZiUGj9ob9t5JuUQrFSdR8MzbXKZBbTIZ2TdQuyVJ1EdgTPptNo7uOc2T8b2Bpvoy61aaAW0tsESfkHDpMH4jU8ouzgGN1NrmxG9bzRCSnB2XifSy5Fzi2Mv9DbuH_gZoRH9UV5vSnzgldFmaK7A</textarea>
+        <div class="button-row">
+          <button id="saveSettings" type="button">Save</button>
+          <button id="healthCheck" type="button" class="secondary">Health</button>
+          <button id="clearSettings" type="button" class="danger">Clear</button>
+        </div>
       </div>
-      <div id="connectionStatus" class="status warn">Disconnected</div>
-    </header>
 
-    <main>
-      <aside class="panel controls">
-        <div class="group">
-          <p class="group-title">Backend</p>
-          <label for="apiBase">API base URL</label>
-          <input id="apiBase" value="https://api.dev.matinteb.org" />
-          <label for="accessToken">Auth-service accessToken</label>
-          <textarea id="accessToken" placeholder="Paste internal JWT accessToken here">eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InYxIn0.eyJzdWIiOiJjM2Y1NTBiNS05OTc2LTQ4NGItYjhiZS1mZWY3Zjk0ZmFmNGQiLCJ1aWQiOiJHUWN2YkE5ZEE1UmpLMlo4Y0c1ekNDd2RqVFkyIiwiZW1haWwiOiJub3JhLmhhZGRhZC5kb2N0b3JAem9uaXhtZWQuZGV2Iiwicm9sZSI6IkRPQ1RPUiIsInBlcm1zIjpbImF1dGg6bWUiLCJkb2N0b3I6cmVhZDpzZWxmIiwiZG9jdG9yOndyaXRlOnNlbGYiXSwic3RhdHVzIjoiQUNUSVZFIiwiaWF0IjoxNzgyNjUyODc0LCJleHAiOjE3ODI5OTg0NzQsImF1ZCI6ImJlbGxhZGkiLCJpc3MiOiJhdXRoIn0.bp4aNJk-VsqW27KmGtE6CkUKg1GmAp3mRNjcx0HUU7d2Pbs3Kk1ruh6APS8o_2IAS7ybPeN7rPrOtY9tTBx5LtWMnt1K3W07rQevSzQ8lNDdWZyTJarAYR6OgzGhoR3_YyJUVUXmVEvJpCdsqvSALS4i-kamaOgt0DZzk4LB534K8xEqqk-ui5SpcXv9DsgrZkAZiUGj9ob9t5JuUQrFSdR8MzbXKZBbTIZ2TdQuyVJ1EdgTPptNo7uOc2T8b2Bpvoy61aaAW0tsESfkHDpMH4jU8ouzgGN1NrmxG9bzRCSnB2XifSy5Fzi2Mv9DbuH_gZoRH9UV5vSnzgldFmaK7A</textarea>
-          <div class="button-row">
-            <button id="saveSettings" type="button">Save</button>
-            <button id="healthCheck" type="button" class="secondary">Health</button>
-            <button id="clearSettings" type="button" class="danger">Clear</button>
-          </div>
+      <div class="group">
+        <p class="group-title">Stream user</p>
+        <label for="displayName">Display name</label>
+        <input id="displayName" value="Doctor Test" />
+        <label for="imageUrl">Image URL</label>
+        <input id="imageUrl" placeholder="https://..." />
+        <div class="button-row">
+          <button id="getToken" type="button">Get Stream Token</button>
         </div>
+        <div class="subtitle" id="streamUserInfo">No Stream user connected yet.</div>
+      </div>
 
-        <div class="group">
-          <p class="group-title">Stream user</p>
-          <label for="displayName">Display name</label>
-          <input id="displayName" value="Doctor Test" />
-          <label for="imageUrl">Image URL</label>
-          <input id="imageUrl" placeholder="https://..." />
-          <div class="button-row">
-            <button id="getToken" type="button">Get Stream Token</button>
-          </div>
-          <div class="subtitle" id="streamUserInfo">No Stream user connected yet.</div>
+      <div class="group">
+        <p class="group-title">Doctor/patient channel</p>
+        <label for="doctorId">Doctor profile id</label>
+        <input id="doctorId" placeholder="doctor-service profile id" />
+        <label for="patientId">Patient user id</label>
+        <input id="patientId" placeholder="auth-service patient user id" />
+        <label for="appointmentId">Appointment id</label>
+        <input id="appointmentId" placeholder="appointment id" />
+        <div class="button-row">
+          <button id="createChannel" type="button">Create / Get</button>
+          <button id="listChannels" type="button" class="secondary">List Mine</button>
         </div>
+        <div id="channelList" class="channels"></div>
+      </div>
 
-        <div class="group">
-          <p class="group-title">Doctor/patient channel</p>
-          <label for="doctorId">Doctor profile id</label>
-          <input id="doctorId" placeholder="doctor-service profile id" />
-          <label for="patientId">Patient user id</label>
-          <input id="patientId" placeholder="auth-service patient user id" />
-          <label for="appointmentId">Appointment id</label>
-          <input id="appointmentId" placeholder="appointment id" />
-          <div class="button-row">
-            <button id="createChannel" type="button">Create / Get</button>
-            <button id="listChannels" type="button" class="secondary">List Mine</button>
-          </div>
-          <div id="channelList" class="channels"></div>
+      <div class="group">
+        <p class="group-title">Event log</p>
+        <div id="log" class="log"></div>
+      </div>
+    </aside>
+
+    <section class="panel chat-shell">
+      <div class="chat-top">
+        <div class="channel-title">
+          <strong id="activeChannelTitle">No channel selected</strong>
+          <span id="activeChannelMeta">Create or select a channel to start watching messages.</span>
         </div>
+        <span class="pill">doctor side</span>
+      </div>
+      <div id="messages" class="messages">
+        <div class="empty">Waiting for a channel.</div>
+      </div>
+      <form id="composer" class="composer">
+        <textarea id="messageText" placeholder="Write a message..." disabled></textarea>
+        <button id="sendMessage" type="submit" disabled>Send</button>
+      </form>
+    </section>
+  </main>
 
-        <div class="group">
-          <p class="group-title">Event log</p>
-          <div id="log" class="log"></div>
-        </div>
-      </aside>
+  <script type="module">
+    import { StreamChat } from "https://cdn.jsdelivr.net/npm/stream-chat@9.47.0/+esm";
 
-      <section class="panel chat-shell">
-        <div class="chat-top">
-          <div class="channel-title">
-            <strong id="activeChannelTitle">No channel selected</strong>
-            <span id="activeChannelMeta">Create or select a channel to start watching messages.</span>
-          </div>
-          <span class="pill">doctor side</span>
-        </div>
-        <div id="messages" class="messages">
-          <div class="empty">Waiting for a channel.</div>
-        </div>
-        <form id="composer" class="composer">
-          <textarea id="messageText" placeholder="Write a message..." disabled></textarea>
-          <button id="sendMessage" type="submit" disabled>Send</button>
-        </form>
-      </section>
-    </main>
+    const ROLE = "doctor";
+    const storageKey = "zonixmed.chat.manual.doctor";
+    const ids = [
+      "apiBase",
+      "accessToken",
+      "displayName",
+      "imageUrl",
+      "doctorId",
+      "patientId",
+      "appointmentId",
+    ];
+    const el = Object.fromEntries(
+      [
+        ...ids,
+        "connectionStatus",
+        "streamUserInfo",
+        "channelList",
+        "activeChannelTitle",
+        "activeChannelMeta",
+        "messages",
+        "composer",
+        "messageText",
+        "sendMessage",
+        "log",
+      ].map((id) => [id, document.getElementById(id)]),
+    );
 
-    <script type="module">
-      import { StreamChat } from "https://cdn.jsdelivr.net/npm/stream-chat@9.47.0/+esm";
+    let client;
+    let streamToken;
+    let streamUserId;
+    let activeChannel;
+    let activeChannelInfo;
 
-      const ROLE = "doctor";
-      const storageKey = "zonixmed.chat.manual.doctor";
-      const ids = [
-        "apiBase",
-        "accessToken",
-        "displayName",
-        "imageUrl",
-        "doctorId",
-        "patientId",
-        "appointmentId",
-      ];
-      const el = Object.fromEntries(
-        [
-          ...ids,
-          "connectionStatus",
-          "streamUserInfo",
-          "channelList",
-          "activeChannelTitle",
-          "activeChannelMeta",
-          "messages",
-          "composer",
-          "messageText",
-          "sendMessage",
-          "log",
-        ].map((id) => [id, document.getElementById(id)]),
-      );
+    restore();
+    bind();
+    log("Ready. Doctor access token is pre-filled. doctorId/patientId/appointmentId are pre-filled from ?query params when present.");
 
-      let client;
-      let streamToken;
-      let streamUserId;
-      let activeChannel;
-      let activeChannelInfo;
+    function bind() {
+      document.getElementById("saveSettings").addEventListener("click", save);
+      document.getElementById("clearSettings").addEventListener("click", clear);
+      document.getElementById("healthCheck").addEventListener("click", health);
+      document.getElementById("getToken").addEventListener("click", getStreamToken);
+      document.getElementById("createChannel").addEventListener("click", createOrGetChannel);
+      document.getElementById("listChannels").addEventListener("click", listChannels);
+      el.composer.addEventListener("submit", sendMessage);
+    }
 
-      restore();
-      bind();
-      log("Ready. Doctor access token is pre-filled. doctorId/patientId/appointmentId are pre-filled from ?query params when present.");
-
-      function bind() {
-        document.getElementById("saveSettings").addEventListener("click", save);
-        document.getElementById("clearSettings").addEventListener("click", clear);
-        document.getElementById("healthCheck").addEventListener("click", health);
-        document.getElementById("getToken").addEventListener("click", getStreamToken);
-        document.getElementById("createChannel").addEventListener("click", createOrGetChannel);
-        document.getElementById("listChannels").addEventListener("click", listChannels);
-        el.composer.addEventListener("submit", sendMessage);
+    function restore() {
+      const saved = JSON.parse(localStorage.getItem(storageKey) || "{}");
+      for (const id of ids) {
+        if (saved[id]) el[id].value = saved[id];
       }
+      applyUrlParams();
+    }
 
-      function restore() {
-        const saved = JSON.parse(localStorage.getItem(storageKey) || "{}");
-        for (const id of ids) {
-          if (saved[id]) el[id].value = saved[id];
+    function applyUrlParams() {
+      try {
+        const params = new URLSearchParams(window.location.search);
+        for (const id of ["doctorId", "patientId", "appointmentId"]) {
+          const value = params.get(id);
+          if (value) el[id].value = value;
         }
-        applyUrlParams();
+      } catch (error) {
+        // ignore — URL params are best-effort
       }
+    }
 
-      function applyUrlParams() {
-        try {
-          const params = new URLSearchParams(window.location.search);
-          for (const id of ["doctorId", "patientId", "appointmentId"]) {
-            const value = params.get(id);
-            if (value) el[id].value = value;
-          }
-        } catch (error) {
-          // ignore — URL params are best-effort
-        }
+
+    function save() {
+      const data = {};
+      for (const id of ids) data[id] = el[id].value.trim();
+      localStorage.setItem(storageKey, JSON.stringify(data));
+      log("Saved local test settings.");
+    }
+
+    function clear() {
+      localStorage.removeItem(storageKey);
+      for (const id of ids) {
+        if (id !== "apiBase" && id !== "displayName") el[id].value = "";
       }
+      el.apiBase.value = "https://api.dev.matinteb.org";
+      el.displayName.value = "Doctor Test";
+      log("Cleared local test settings.");
+    }
 
+    async function health() {
+      const response = await api("/health", { auth: false });
+      log(`Health OK: ${JSON.stringify(response.data || response)}`);
+    }
 
-      function save() {
-        const data = {};
-        for (const id of ids) data[id] = el[id].value.trim();
-        localStorage.setItem(storageKey, JSON.stringify(data));
-        log("Saved local test settings.");
-      }
-
-      function clear() {
-        localStorage.removeItem(storageKey);
-        for (const id of ids) {
-          if (id !== "apiBase" && id !== "displayName") el[id].value = "";
-        }
-        el.apiBase.value = "https://api.dev.matinteb.org";
-        el.displayName.value = "Doctor Test";
-        log("Cleared local test settings.");
-      }
-
-      async function health() {
-        const response = await api("/health", { auth: false });
-        log(`Health OK: ${JSON.stringify(response.data || response)}`);
-      }
-
-      async function getStreamToken() {
-        save();
-        const body = compact({
-          displayName: el.displayName.value.trim(),
-          imageUrl: el.imageUrl.value.trim(),
-        });
-        const response = await api("/chat/token", {
-          method: "POST",
-          body,
-        });
-        const data = unwrap(response);
-        streamToken = data.token;
-        streamUserId = data.userId;
-        el.streamUserInfo.textContent = `Stream user: ${streamUserId}, expires: ${data.expiresAt}`;
-        await connectStream(data);
-      }
-
-      async function connectStream(data) {
-        if (client) await client.disconnectUser();
-        client = StreamChat.getInstance(data.apiKey);
-        client.on("connection.changed", (event) => {
-          setStatus(event.online ? "Connected" : "Disconnected", event.online ? "ok" : "warn");
-        });
-        await client.connectUser(
-          {
-            id: data.userId,
-            name: el.displayName.value.trim() || ROLE,
-            image: el.imageUrl.value.trim() || undefined,
-          },
-          data.token,
-        );
-        setStatus("Connected", "ok");
-        log(`Connected to Stream as ${data.userId}.`);
-      }
-
-      async function ensureStream() {
-        if (!client || !streamToken || !streamUserId) {
-          await getStreamToken();
-        }
-      }
-
-      async function createOrGetChannel() {
-        save();
-        await ensureStream();
-        const payload = {
-          doctorId: requiredValue("doctorId"),
-          patientId: requiredValue("patientId"),
-          appointmentId: requiredValue("appointmentId"),
-        };
-        const response = await api("/chat/channels/doctor-patient", {
-          method: "POST",
-          body: payload,
-        });
-        await watchChannel(unwrap(response));
-      }
-
-      async function listChannels() {
-        save();
-        await ensureStream();
-        const response = await api("/chat/channels?limit=20");
-        const data = unwrap(response);
-        const items = data.items || [];
-        el.channelList.innerHTML = "";
-        if (!items.length) {
-          el.channelList.innerHTML = `<div class="subtitle">No channels returned.</div>`;
-          return;
-        }
-        for (const channel of items) {
-          const button = document.createElement("button");
-          button.type = "button";
-          button.className = "channel-item";
-          button.textContent = `${channel.id} | ${channel.doctorId || "-"} / ${channel.patientId || "-"}`;
-          button.addEventListener("click", () => watchChannel(channel));
-          el.channelList.appendChild(button);
-        }
-        log(`Loaded ${items.length} channel(s).`);
-      }
-
-      async function watchChannel(channelInfo) {
-        await ensureStream();
-        activeChannelInfo = channelInfo;
-        activeChannel = client.channel(channelInfo.streamChannelType || "messaging", channelInfo.id);
-        await activeChannel.watch();
-        activeChannel.off("message.new", renderMessages);
-        activeChannel.on("message.new", renderMessages);
-        activeChannel.on("message.updated", renderMessages);
-        activeChannel.on("message.deleted", renderMessages);
-        el.activeChannelTitle.textContent = channelInfo.cid || activeChannel.cid;
-        el.activeChannelMeta.textContent = `doctorId=${channelInfo.doctorId || "-"} | patientId=${channelInfo.patientId || "-"} | appointmentId=${channelInfo.appointmentId || "-"}`;
-        el.messageText.disabled = false;
-        el.sendMessage.disabled = false;
-        renderMessages();
-        log(`Watching channel ${channelInfo.id}.`);
-      }
-
-      function renderMessages() {
-        if (!activeChannel) return;
-        const messages = activeChannel.state.messages || [];
-        el.messages.innerHTML = "";
-        if (!messages.length) {
-          el.messages.innerHTML = `<div class="empty">No messages yet.</div>`;
-          return;
-        }
-        for (const message of messages) {
-          const row = document.createElement("div");
-          row.className = `message ${message.user?.id === streamUserId ? "mine" : ""}`;
-          const bubble = document.createElement("div");
-          bubble.className = "bubble";
-          const meta = document.createElement("div");
-          meta.className = "meta";
-          meta.textContent = `${message.user?.id || "unknown"} ${formatTime(message.created_at)}`;
-          const text = document.createElement("div");
-          text.className = "text";
-          text.textContent = message.text || "";
-          bubble.append(meta, text);
-          row.appendChild(bubble);
-          el.messages.appendChild(row);
-        }
-        el.messages.scrollTop = el.messages.scrollHeight;
-      }
-
-      async function sendMessage(event) {
-        event.preventDefault();
-        if (!activeChannel) return;
-        const text = el.messageText.value.trim();
-        if (!text) return;
-        await activeChannel.sendMessage({ text });
-        el.messageText.value = "";
-        renderMessages();
-      }
-
-      async function api(path, options = {}) {
-        try {
-          const base = el.apiBase.value.trim().replace(/\/+$/, "");
-          const headers = { Accept: "application/json" };
-          if (options.body) headers["Content-Type"] = "application/json";
-          if (options.auth !== false) headers.Authorization = `Bearer ${requiredValue("accessToken")}`;
-          const response = await fetch(`${base}${path}`, {
-            method: options.method || "GET",
-            headers,
-            body: options.body ? JSON.stringify(options.body) : undefined,
-          });
-          const text = await response.text();
-          const parsed = text ? JSON.parse(text) : {};
-          if (!response.ok) {
-            throw new Error(`${response.status} ${response.statusText}: ${JSON.stringify(parsed)}`);
-          }
-          return parsed;
-        } catch (error) {
-          setStatus("Error", "error");
-          log(error.message || String(error));
-          throw error;
-        }
-      }
-
-      function unwrap(response) {
-        return response && typeof response === "object" && "data" in response
-          ? response.data
-          : response;
-      }
-
-      function requiredValue(id) {
-        const value = el[id].value.trim();
-        if (!value) throw new Error(`${id} is required.`);
-        return value;
-      }
-
-      function compact(input) {
-        return Object.fromEntries(Object.entries(input).filter(([, value]) => Boolean(value)));
-      }
-
-      function setStatus(text, kind) {
-        el.connectionStatus.textContent = text;
-        el.connectionStatus.className = `status ${kind || ""}`.trim();
-      }
-
-      function log(message) {
-        const line = `[${new Date().toLocaleTimeString()}] ${message}`;
-        el.log.textContent = `${line}\n${el.log.textContent}`.slice(0, 6000);
-      }
-
-      function formatTime(value) {
-        if (!value) return "";
-        return new Date(value).toLocaleString();
-      }
-
-      window.addEventListener("beforeunload", () => {
-        if (client) client.disconnectUser();
+    async function getStreamToken() {
+      save();
+      const body = compact({
+        displayName: el.displayName.value.trim(),
+        imageUrl: el.imageUrl.value.trim(),
       });
-    </script>
-  </body>
+      const response = await api("/chat/token", {
+        method: "POST",
+        body,
+      });
+      const data = unwrap(response);
+      streamToken = data.token;
+      streamUserId = data.userId;
+      el.streamUserInfo.textContent = `Stream user: ${streamUserId}, expires: ${data.expiresAt}`;
+      await connectStream(data);
+    }
+
+    async function connectStream(data) {
+      if (client) await client.disconnectUser();
+      client = StreamChat.getInstance(data.apiKey);
+      client.on("connection.changed", (event) => {
+        setStatus(event.online ? "Connected" : "Disconnected", event.online ? "ok" : "warn");
+      });
+      await client.connectUser(
+        {
+          id: data.userId,
+          name: el.displayName.value.trim() || ROLE,
+          image: el.imageUrl.value.trim() || undefined,
+        },
+        data.token,
+      );
+      setStatus("Connected", "ok");
+      log(`Connected to Stream as ${data.userId}.`);
+    }
+
+    async function ensureStream() {
+      if (!client || !streamToken || !streamUserId) {
+        await getStreamToken();
+      }
+    }
+
+    async function createOrGetChannel() {
+      save();
+      await ensureStream();
+      const payload = {
+        doctorId: requiredValue("doctorId"),
+        patientId: requiredValue("patientId"),
+        appointmentId: requiredValue("appointmentId"),
+      };
+      const response = await api("/chat/channels/doctor-patient", {
+        method: "POST",
+        body: payload,
+      });
+      await watchChannel(unwrap(response));
+    }
+
+    async function listChannels() {
+      save();
+      await ensureStream();
+      const response = await api("/chat/channels?limit=20");
+      const data = unwrap(response);
+      const items = data.items || [];
+      el.channelList.innerHTML = "";
+      if (!items.length) {
+        el.channelList.innerHTML = `<div class="subtitle">No channels returned.</div>`;
+        return;
+      }
+      for (const channel of items) {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "channel-item";
+        button.textContent = `${channel.id} | ${channel.doctorId || "-"} / ${channel.patientId || "-"}`;
+        button.addEventListener("click", () => watchChannel(channel));
+        el.channelList.appendChild(button);
+      }
+      log(`Loaded ${items.length} channel(s).`);
+    }
+
+    async function watchChannel(channelInfo) {
+      await ensureStream();
+      activeChannelInfo = channelInfo;
+      activeChannel = client.channel(channelInfo.streamChannelType || "messaging", channelInfo.id);
+      await activeChannel.watch();
+      activeChannel.off("message.new", renderMessages);
+      activeChannel.on("message.new", renderMessages);
+      activeChannel.on("message.updated", renderMessages);
+      activeChannel.on("message.deleted", renderMessages);
+      el.activeChannelTitle.textContent = channelInfo.cid || activeChannel.cid;
+      el.activeChannelMeta.textContent = `doctorId=${channelInfo.doctorId || "-"} | patientId=${channelInfo.patientId || "-"} | appointmentId=${channelInfo.appointmentId || "-"}`;
+      el.messageText.disabled = false;
+      el.sendMessage.disabled = false;
+      renderMessages();
+      log(`Watching channel ${channelInfo.id}.`);
+    }
+
+    function renderMessages() {
+      if (!activeChannel) return;
+      const messages = activeChannel.state.messages || [];
+      el.messages.innerHTML = "";
+      if (!messages.length) {
+        el.messages.innerHTML = `<div class="empty">No messages yet.</div>`;
+        return;
+      }
+      for (const message of messages) {
+        const row = document.createElement("div");
+        row.className = `message ${message.user?.id === streamUserId ? "mine" : ""}`;
+        const bubble = document.createElement("div");
+        bubble.className = "bubble";
+        const meta = document.createElement("div");
+        meta.className = "meta";
+        meta.textContent = `${message.user?.id || "unknown"} ${formatTime(message.created_at)}`;
+        const text = document.createElement("div");
+        text.className = "text";
+        text.textContent = message.text || "";
+        bubble.append(meta, text);
+        row.appendChild(bubble);
+        el.messages.appendChild(row);
+      }
+      el.messages.scrollTop = el.messages.scrollHeight;
+    }
+
+    async function sendMessage(event) {
+      event.preventDefault();
+      if (!activeChannel) return;
+      const text = el.messageText.value.trim();
+      if (!text) return;
+      await activeChannel.sendMessage({ text });
+      el.messageText.value = "";
+      renderMessages();
+    }
+
+    async function api(path, options = {}) {
+      try {
+        const base = el.apiBase.value.trim().replace(/\/+$/, "");
+        const headers = { Accept: "application/json" };
+        if (options.body) headers["Content-Type"] = "application/json";
+        if (options.auth !== false) headers.Authorization = `Bearer ${requiredValue("accessToken")}`;
+        const response = await fetch(`${base}${path}`, {
+          method: options.method || "GET",
+          headers,
+          body: options.body ? JSON.stringify(options.body) : undefined,
+        });
+        const text = await response.text();
+        const parsed = text ? JSON.parse(text) : {};
+        if (!response.ok) {
+          throw new Error(`${response.status} ${response.statusText}: ${JSON.stringify(parsed)}`);
+        }
+        return parsed;
+      } catch (error) {
+        setStatus("Error", "error");
+        log(error.message || String(error));
+        throw error;
+      }
+    }
+
+    function unwrap(response) {
+      return response && typeof response === "object" && "data" in response
+        ? response.data
+        : response;
+    }
+
+    function requiredValue(id) {
+      const value = el[id].value.trim();
+      if (!value) throw new Error(`${id} is required.`);
+      return value;
+    }
+
+    function compact(input) {
+      return Object.fromEntries(Object.entries(input).filter(([, value]) => Boolean(value)));
+    }
+
+    function setStatus(text, kind) {
+      el.connectionStatus.textContent = text;
+      el.connectionStatus.className = `status ${kind || ""}`.trim();
+    }
+
+    function log(message) {
+      const line = `[${new Date().toLocaleTimeString()}] ${message}`;
+      el.log.textContent = `${line}\n${el.log.textContent}`.slice(0, 6000);
+    }
+
+    function formatTime(value) {
+      if (!value) return "";
+      return new Date(value).toLocaleString();
+    }
+
+    window.addEventListener("beforeunload", () => {
+      if (client) client.disconnectUser();
+    });
+  </script>
+</body>
+
 </html>
